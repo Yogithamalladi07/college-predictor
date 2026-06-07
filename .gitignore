@@ -216,3 +216,11 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# Large files
+*.pdf
+
+# Node modules
+frontend/node_modules/
+
+# Environment variables
+.env
