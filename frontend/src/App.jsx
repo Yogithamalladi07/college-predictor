@@ -13,7 +13,8 @@ function App() {
   
   async function predictCollege() {
     setLoading(true);
-    const response = fetch("https://college-predictor-iraz.onrender.com/predict",
+    const response =await fetch(
+      "https://college-predictor-iraz.onrender.com/predict",
       {
         method: "POST",
         headers: {
@@ -30,6 +31,7 @@ function App() {
     );
 
     const data = await response.json();
+    console.log(data);
     setLoading(false);
     if (Array.isArray(data)) {
       setResults(data);
