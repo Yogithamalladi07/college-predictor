@@ -13,8 +13,7 @@ function App() {
   
   async function predictCollege() {
     setLoading(true);
-    const response = await fetch(
-      "http://127.0.0.1:5000/predict",
+    const response = fetch("https://college-predictor-iraz.onrender.com/predict",
       {
         method: "POST",
         headers: {
