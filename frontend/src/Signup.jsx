@@ -7,6 +7,8 @@ function Signup({ switchToLogin, goHome }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [successMsg, setSuccessMsg] = useState("");
+
   const handleSignup = async () => {
     try {
       await createUserWithEmailAndPassword(
@@ -14,16 +16,20 @@ function Signup({ switchToLogin, goHome }) {
         email,
         password
       );
+      setSuccessMsg("Account created successfully!");
+      setErrorMsg("");
 
     } catch (error) {
-  if (error.code === "auth/email-already-in-use") {
-    setErrorMsg("Email already exists");
-  } else if (error.code === "auth/weak-password") {
-    setErrorMsg("Password must be at least 6 characters");
-  } else {
-    setErrorMsg("Signup failed");
-  }
-}
+      if (error.code === "auth/email-already-in-use") {
+        setErrorMsg("Email already exists");
+      } else if (error.code === "auth/weak-password") {
+        setErrorMsg("Password must be at least 6 characters");
+      } else if (error.code === "auth/invalid-email") {
+        setErrorMsg("Invalid email format");
+      } else {
+        setErrorMsg("Signup failed");
+      }
+    }
   };
 
   return (
@@ -37,7 +43,28 @@ function Signup({ switchToLogin, goHome }) {
     </button>
 
     <h2>Create Account </h2>
-
+      {errorMsg && (
+  <p
+    style={{
+      color: "#ef4444",
+      textAlign: "center",
+      marginBottom: "15px"
+    }}
+  >
+    {errorMsg}
+  </p>
+)}
+{successMsg && (
+  <p
+    style={{
+      color: "#22c55e",
+      textAlign: "center",
+      marginBottom: "15px"
+    }}
+  >
+    {successMsg}
+  </p>
+)}
     <input
       type="email"
       placeholder="Enter Email"

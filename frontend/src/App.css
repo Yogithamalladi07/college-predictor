@@ -521,10 +521,12 @@ button:hover {
 }
 
 .feature-card {
-  max-width: 900px;
-  padding: 35px;
   width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
   padding: 35px;
+  box-sizing: border-box;
+
   background: rgba(255,255,255,0.08);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.15);
@@ -534,7 +536,6 @@ button:hover {
   transition: all 0.3s ease;
   text-align: left;
 }
-
 .feature-card:hover {
   transform: translateY(-8px);
   box-shadow:
@@ -648,4 +649,118 @@ button:hover {
 
 .auth-back-btn:hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 768px) {
+
+  /* Navbar */
+  .navbar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 15px;
+  }
+
+  .logo {
+    font-size: 22px;
+    text-align: center;
+  }
+
+  .navbar > div:last-child {
+    display: flex;
+    gap: 10px;
+  }
+
+  .nav-btn {
+    width: auto !important;
+    margin: 0;
+    padding: 10px 18px;
+  }
+
+  /* Hero */
+  .hero {
+    margin-top: 50px;
+    padding: 0 15px;
+  }
+
+  .hero h1 {
+    font-size: 40px;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .primary-btn,
+  .secondary-btn {
+    width: 100%;
+    margin: 0;
+  }
+
+  /* Features */
+  .features {
+    padding: 50px 15px;
+  }
+
+  .features h2 {
+    font-size: 32px;
+    line-height: 1.3;
+  }
+
+  .feature-card {
+    width: auto;
+    max-width: 100%;
+    margin: 0;
+    padding: 20px;
+    border-radius: 18px;
+  }
+
+  .feature-card h3 {
+    font-size: 22px;
+  }
+
+  .feature-card p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Predictor */
+  .container {
+    padding: 10px;
+  }
+
+  .card {
+    max-width: 100%;
+    padding: 20px;
+  }
+
+  .card h1 {
+    font-size: 34px;
+  }
+
+  .card p {
+    font-size: 16px;
+  }
+
+  /* Auth */
+  .auth-container {
+    width: 95%;
+    padding: 25px;
+  }
+
+  .auth-container h2 {
+    font-size: 32px;
+  }
+
+  /* Floating buttons */
+  .download-fab,
+  .back-btn {
+    width: 50px !important;
+    height: 50px !important;
+  }
 }

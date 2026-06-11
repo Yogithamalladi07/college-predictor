@@ -60,6 +60,7 @@ function App() {
 }
     const logout = async () => {
       await signOut(auth);
+      setPage("home");
     };
   function downloadExcel() {
   if (results.length === 0) {

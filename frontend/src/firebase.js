@@ -2,14 +2,13 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-        apiKey: "AIzaSyDr_vVjDjjdDfu0-1FzLC178AdW0N4ITOk",
-        authDomain: "college-predictor-a551b.firebaseapp.com",
-        projectId: "college-predictor-a551b",
-        storageBucket: "college-predictor-a551b.firebasestorage.app",
-        messagingSenderId: "617270281303",
-        appId: "1:617270281303:web:dabd54050ea630417b8f12",
-        measurementId: "G-8LE29LP9T2"
-        };
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
+};
 
 const app = initializeApp(firebaseConfig);
 
