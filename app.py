@@ -59,13 +59,13 @@ def predict():
     print("After rank/category/gender filter:", len(filtered))
     
     if exam == "JEE ADV":
-        print(
-            df[df['Institute'].str.contains(
+        filtered = filtered[
+            filtered['Institute'].str.contains(
                 "Indian Institute of Technology",
                 case=False,
                 na=False
-            )]['Institute'].head()
-        )
+            )
+        ]
         
 
     elif exam == "JEE MAIN":
@@ -83,24 +83,15 @@ def predict():
         ]
 
     filtered = filtered.sort_values(by='Closing Rank')
-
+    
+    
     if filtered.empty:
         return jsonify({
-            "message": "No colleges found"
+            "message": "No colleges found with given criteria."
         })
 
-    result = filtered[
-        [
-            'Institute',
-            'Academic Program Name',
-            'Seat Type',
-            'Gender',
-            'Opening Rank',
-            'Closing Rank'
-        ]
-    ].head(20)
-
+    result = filtered
     return jsonify(result.to_dict(orient='records'))
-
+    
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000)
