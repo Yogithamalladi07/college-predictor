@@ -3,8 +3,16 @@ import pandas as pd
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
-
+CORS(
+    app,
+    resources={
+        r"/*": {
+            "origins": [
+                "https://college-predictor-nu.vercel.app"
+            ]
+        }
+    }
+)
 # Load dataset
 df = pd.read_csv("Josaa_2025.csv", sep="\t")
 
