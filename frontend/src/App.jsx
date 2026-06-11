@@ -47,10 +47,12 @@ function App() {
       {page === "login" ? (
         <Login
           switchToSignup={() => setPage("signup")}
+          goHome={() => setPage("home")}
         />
       ) : (
         <Signup
           switchToLogin={() => setPage("login")}
+          goHome={() => setPage("home")}
         />
       )}
     </div>

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
+import { FaArrowLeft } from "react-icons/fa";
 
-function Signup({ switchToLogin }) {
+function Signup({ switchToLogin, goHome }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -26,54 +27,49 @@ function Signup({ switchToLogin }) {
   };
 
   return (
-    <div>
-      <h2>Signup</h2>
-        {errorMsg && (
-        <p style={{
-            color: "#ef4444",
-            textAlign: "center",
-            marginTop: "10px"
-        }}>
-            {errorMsg}
-        </p>
-        )}
-      <input
-        type="email"
-        placeholder="Email"
-        onChange={(e) =>
-          setEmail(e.target.value)
-        }
-      />
+  <div className="auth-container">
 
-      <br /><br />
+    <button
+      className="auth-back-btn"
+      onClick={goHome}
+    >
+      <FaArrowLeft />
+    </button>
 
-      <input
-        type="password"
-        placeholder="Password"
-        onChange={(e) =>
-          setPassword(e.target.value)
-        }
-      />
+    <h2>Create Account </h2>
 
-      <br /><br />
+    <input
+      type="email"
+      placeholder="Enter Email"
+      value={email}
+      onChange={(e) => setEmail(e.target.value)}
+    />
 
-      <button onClick={handleSignup}>
-        Sign Up
-        </button>
+    <input
+      type="password"
+      placeholder="Enter Password"
+      value={password}
+      onChange={(e) => setPassword(e.target.value)}
+    />
 
-<p
-  onClick={() => switchToLogin()}
-  style={{
-    textAlign: "center",
-    marginTop: "15px",
-    cursor: "pointer",
-    color: "#6c63ff"
-  }}
->
-  Already have an account? Login
-</p>
-    </div>
-  );
+    <button onClick={handleSignup}>
+      Sign Up
+    </button>
+
+    <p
+      onClick={() => switchToLogin()}
+      style={{
+        textAlign: "center",
+        marginTop: "15px",
+        cursor: "pointer",
+        color: "#6c63ff"
+      }}
+    >
+      Already have an account? Login
+    </p>
+
+  </div>
+);
 }
 
 export default Signup;

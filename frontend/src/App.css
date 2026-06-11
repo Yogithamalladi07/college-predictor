@@ -619,3 +619,33 @@ button:hover {
   color: #cbd5e1;
   font-size: 15px;
 }
+
+.auth-container {
+  position: relative;
+}
+
+.auth-back-btn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+
+  width: 40px !important;
+  height: 40px !important;
+
+  border-radius: 50%;
+  border: none;
+
+  background: #6366f1;
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.auth-back-btn:hover {
+  transform: scale(1.1);
+}

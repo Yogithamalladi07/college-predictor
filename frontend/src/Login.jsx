@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "./firebase";
+import { FaArrowLeft } from "react-icons/fa";
 
-function Login({ switchToSignup }) {
+function Login({ switchToSignup, goHome }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -37,6 +38,13 @@ function Login({ switchToSignup }) {
 
   return (
   <div className="auth-container">
+    <button
+    className="auth-back-btn"
+    onClick={goHome}
+    >
+    <FaArrowLeft />
+    </button>
+    
     <h2>Welcome Back 👋</h2>
 
     {errorMsg && (
