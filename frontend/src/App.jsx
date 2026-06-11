@@ -1,8 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "./App.css";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import Login from "./Login";
+import Signup from "./Signup";
+import { auth } from "./firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { FaSignOutAlt } from "react-icons/fa";
+import { FaArrowLeft } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
+import Home from "./Home";
 
 function App() {
-
+  const [user, setUser] = useState(null);
   const [rank, setRank] = useState("");
   const [category, setCategory] = useState("OPEN");
   const [gender, setGender] = useState("Gender-Neutral");
@@ -10,15 +20,87 @@ function App() {
   const [results, setResults] = useState([]);
   const [exam, setExam] = useState("JEE MAIN");
   const [loading, setLoading] = useState(false);
-  
-  async function predictCollege() {
-    setLoading(true);
-    const response =await fetch(
-      "https://college-predictor-iraz.onrender.com/predict",
+  const [showSignup, setShowSignup] = useState(true);
+  const [page, setPage] = useState("home");
+  const [searched, setSearched] = useState(false);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  if (page === "home") {
+  return (
+    <Home
+      onLogin={() => setPage("login")}
+      onSignup={() => setPage("signup")}
+      onStart={() => setPage("signup")}
+    />
+  );
+}
+  if (!user && page !== "home") {
+  return (
+    <div className="auth-page">
+      {page === "login" ? (
+        <Login
+          switchToSignup={() => setPage("signup")}
+        />
+      ) : (
+        <Signup
+          switchToLogin={() => setPage("login")}
+        />
+      )}
+    </div>
+  );
+}
+    const logout = async () => {
+      await signOut(auth);
+    };
+  function downloadExcel() {
+  if (results.length === 0) {
+    alert("No results to download");
+    return;
+  }
+  const worksheet = XLSX.utils.json_to_sheet(results);
+  const workbook = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(
+    workbook,
+    worksheet,
+    "Colleges"
+  );
+  const excelBuffer = XLSX.write(
+    workbook,
+    {
+      bookType: "xlsx",
+      type: "array"
+    }
+  );
+  const fileData = new Blob(
+    [excelBuffer],
+    {
+      type:
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    }
+  );
+  saveAs(
+    fileData,
+    "college_predictions.xlsx"
+  );
+}
+async function predictCollege() {
+  setLoading(true);
+  setSearched(true);
+  try {
+    console.log("Predicting colleges");
+
+    const response = await fetch("http://127.0.0.1:5000/predict",
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           rank,
@@ -26,25 +108,40 @@ function App() {
           gender,
           branch,
           exam
-        })
+        }),
       }
     );
 
     const data = await response.json();
-    console.log(data);
-    setLoading(false);
+    console.log("Total returned:", Array.isArray(data) ? data.length : 0);
     if (Array.isArray(data)) {
-      setResults(data);
-    } else {
-      setResults([]);
-      alert(data.message || data.error);
-    }
+  setResults(data);
+} else {
+  setResults([]);
+}
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
+  } finally {
+    setLoading(false);
   }
+}
 
   return (
+    <div className="app">
     <div className="container">
-      <div className = "card">
+
+  <button
+    className="back-btn"
+    onClick={() => setPage("home")}
+  >
+    <FaArrowLeft />
+  </button>
+
+  <div className="card">
       <h1>College Predictor</h1>
+      <div className="logout-icon" onClick={logout}>
+        <FaSignOutAlt />
+      </div>
       <p>
         Find colleges based on rank, category, branch and exam.
       </p>
@@ -187,14 +284,28 @@ function App() {
       </button>
       {loading && <p>🔍 Searching colleges...</p>}
       <hr />
+      {searched && (
+  <>
+    {results.length > 0 ? (
       <h3 className="result-count">
-        {results.length === 0
-          ? "No colleges found"
-          : `Found ${results.length} colleges`}
+        🎓 Found {results.length} colleges
       </h3>
+    ) : (
+      !loading && (
+        <div className="no-results">
+          <h3>🔍 No Colleges Found</h3>
+          <p>
+            Try changing your rank, category,
+            gender, or branch selection.
+          </p>
+        </div>
+      )
+    )}
+  </>
+)}
       {
         results.map((college, index) => (
-          <div className="college-card">
+          <div key={index} className="college-card">
             <h3>{college.Institute}</h3>
 
             <p>
@@ -217,7 +328,20 @@ function App() {
         ))
       }
     </div>
+    {searched && (
+      <>
+        {results.length > 0 && (
+    <button
+      className="download-fab"
+      onClick={downloadExcel}
+    >
+      <FaDownload />
+    </button>
+  )}
+      </>
+    )}
     </div>
+  </div>
   );
 }
 
