@@ -99,7 +99,7 @@ async function predictCollege() {
   try {
     console.log("Predicting colleges");
 
-    const response = await fetch("https://your-backend-url.onrender.com/predict",
+    const response = await fetch("https://college-predictor-api.onrender.com/predict",
       {
         method: "POST",
         headers: {
